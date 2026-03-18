@@ -36,6 +36,7 @@ Thumbs.db
 
 # Exceptions for lightweight docs/assets if needed
 !docs/**/*.pdf
+!hub_spoke_store_map_final.html
 
 # Local outputs
 outputs/
