@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>다이소 뷰티 챗봇</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', path='chatbot/daiso-logo.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='chatbot/styles.css') }}">
+    <script defer src="{{ url_for('static', path='chatbot/app.js') }}"></script>
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand-lockup">
+            <img
+                class="brand-mark"
+                src="{{ url_for('static', path='chatbot/daiso-logo.svg') }}"
+                alt="다이소 로고"
+            >
+            <div>
+                <p class="brand-title">다이소 뷰티 챗봇</p>
+                <p class="brand-subtitle">현재 내게 딱 맞는 다이소 화장품은?</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="shell">
+        {% if not catalog_ready %}
+        <section class="alert-banner">
+            추천용 카탈로그 파일이 아직 없습니다. 먼저 <code>python src/chatbot/build_catalog.py</code>를 실행해 주세요.
+        </section>
+        {% endif %}
+
+        <section class="hero-card">
+            <img
+                class="hero-mark"
+                src="{{ url_for('static', path='chatbot/daiso-logo.svg') }}"
+                alt="다이소 로고"
+            >
+            <div class="hero-copy">
+                <p class="hero-greeting">안녕하세요! 다이소 뷰티 챗봇이에요.</p>
+                <p class="hero-description">피부 고민이나 원하는 제품을 자유롭게 말씀해주세요!</p>
+                <div class="starter-grid">
+                    {% for prompt in starter_prompts %}
+                    <button class="starter-chip" type="button" data-prompt="{{ prompt.query }}">{{ prompt.label }}</button>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <section id="chat-log" class="chat-log" aria-live="polite"></section>
+    </main>
+
+    <form id="chat-form" class="composer">
+        <label class="composer-field" for="message">
+            <input
+                id="message"
+                name="message"
+                type="text"
+                autocomplete="off"
+                placeholder="예: 건성인데 보습 좋은 제품 추천해줘"
+                required
+            >
+        </label>
+        <button class="composer-submit" type="submit" aria-label="전송">
+            <span>↗</span>
+        </button>
+    </form>
+</body>
+</html>

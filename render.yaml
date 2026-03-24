@@ -1,0 +1,23 @@
+services:
+  - type: web
+    runtime: docker
+    name: daiso-chatbot
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    autoDeployTrigger: commit
+    healthCheckPath: /healthz
+    envVars:
+      - key: DAISO_HOST
+        value: 0.0.0.0
+      - key: DAISO_PORT
+        value: "8000"
+      - key: DAISO_RELOAD
+        value: "false"
+      - key: DAISO_QUERY_PARSER_BACKEND
+        value: rule
+      - key: DAISO_CHATBOT_MODEL
+        value: gpt-4o-mini
+      - key: OPENAI_API_KEY
+        sync: false

@@ -1,0 +1,95 @@
+<section class="exchange">
+    <div class="message-row user">
+        <div class="message-bubble user-bubble">
+            {{ message }}
+        </div>
+    </div>
+
+    <div class="message-row assistant">
+        <div class="message-bubble assistant-bubble">
+            <p class="assistant-summary">{{ response.summary }}</p>
+
+            {% if response.results %}
+            <ul class="quick-result-list">
+                {% for item in response.results %}
+                <li class="quick-result-item">
+                    <a class="quick-result-name" href="{{ item.product_url }}" target="_blank" rel="noopener noreferrer">
+                        {{ item.name }}
+                    </a>
+                    <span class="quick-result-meta">
+                        [{{ item.brand_name }} · {{ "{:,.0f}".format(item.price) }}원 · 평점 {{ "%.2f"|format(item.avg_rating) }} · 리뷰 {{ "{:,}".format(item.review_count) }}개 · 재구매 {{ "%.1f"|format(item.reorder_rate * 100) }}%]
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            {% if response.applied_filters %}
+            <div class="filter-row">
+                {% for item in response.applied_filters %}
+                <span class="filter-chip">{{ item }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if response.results %}
+            <div class="result-grid">
+                {% for item in response.results %}
+                <article class="result-card">
+                    <div class="result-head">
+                        <div>
+                            <p class="result-rank">추천 {{ loop.index }}</p>
+                            <h3 class="result-name">
+                                <a class="result-name-link" href="{{ item.product_url }}" target="_blank" rel="noopener noreferrer">
+                                    {{ item.name }}
+                                </a>
+                            </h3>
+                            <p class="result-meta">{{ item.brand_name }} · {{ item.category_1 }} / {{ item.category_2 }}</p>
+                        </div>
+                        <div class="price-pill">{{ "{:,.0f}".format(item.price) }}원</div>
+                    </div>
+
+                    <div class="result-actions">
+                        <a class="result-link primary" href="{{ item.product_url }}" target="_blank" rel="noopener noreferrer">상품 보러가기</a>
+                        <a class="result-link secondary" href="{{ item.inventory_url }}" target="_blank" rel="noopener noreferrer">매장 재고 확인</a>
+                    </div>
+
+                    {% if item.badges %}
+                    <div class="badge-row">
+                        {% for badge in item.badges %}
+                        <span class="badge">{{ badge }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="metric-row">
+                        <span>평점 {{ "%.2f"|format(item.avg_rating) }}</span>
+                        <span>리뷰 {{ "{:,}".format(item.review_count) }}개</span>
+                        <span>재구매 {{ "%.1f"|format(item.reorder_rate * 100) }}%</span>
+                        <span>추천도 {{ "%.0f"|format(item.final_score * 100) }}점</span>
+                    </div>
+
+                    <ul class="reason-list">
+                        {% for reason in item.reasons %}
+                        <li>{{ reason }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    {% if item.snippet %}
+                    <blockquote class="review-snippet">{{ item.snippet }}</blockquote>
+                    {% endif %}
+
+                    {% if item.warnings %}
+                    <p class="warning-text">{{ item.warnings[0] }}</p>
+                    {% endif %}
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="assistant-summary">
+                딱 맞는 상품을 찾지 못했어요. 가격대나 제품 종류를 조금만 바꿔서 다시 찾아볼까요?
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</section>

@@ -1,0 +1,16 @@
+.git
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+.env
+notebooks/
+outputs/
+logs/
+docs/
+data/*
+!data/chatbot/
+!data/chatbot/daiso_chatbot_catalog.csv
+!data/chatbot/.gitkeep
